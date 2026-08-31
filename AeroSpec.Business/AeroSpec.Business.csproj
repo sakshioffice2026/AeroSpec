@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\AeroSpec.Models\AeroSpec.Models.csproj" />
+		<ProjectReference Include="..\AeroSpec.Repositories\AeroSpec.Repositories.csproj" />
+		<ProjectReference Include="..\Infrastructure\AeroSpec.Repositories\AeroSpec.Repositories.csproj" />
+		<ProjectReference Include="..\Infrastructure\AeroSpec.Models\AeroSpec.Models.csproj" />
+	</ItemGroup>
+
+</Project>

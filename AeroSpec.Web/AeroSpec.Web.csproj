@@ -1,9 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\AeroSpec.Business\AeroSpec.Business.csproj" />
+		<ProjectReference Include="..\AeroSpec.Models\AeroSpec.Models.csproj" />
+		<ProjectReference Include="..\AeroSpec.Repositories\AeroSpec.Repositories.csproj" />
+		<ProjectReference Include="..\AeroSpec.Database\AeroSpec.Database.csproj" />
+	</ItemGroup>
 
 </Project>

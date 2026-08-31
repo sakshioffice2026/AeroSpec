@@ -21,6 +21,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AeroSpec.Repositories", "Ae
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AeroSpec.Web", "AeroSpec.Web\AeroSpec.Web.csproj", "{23D1CB6C-CF93-4E9A-B25D-1688E7B74A7F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{4A447A14-1EE4-4E8A-83A9-17D93F1A6F2D}"
+	ProjectSection(SolutionItems) = preProject
+		ServiceCollectionExtensions.cs = ServiceCollectionExtensions.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +67,7 @@ Global
 		{0ED69CE5-46A4-4755-AB5C-8E83284249B2} = {98C84114-BA55-4087-BC12-972A16BB37EA}
 		{6C428B89-FABA-48CD-9867-465429346561} = {98C84114-BA55-4087-BC12-972A16BB37EA}
 		{23D1CB6C-CF93-4E9A-B25D-1688E7B74A7F} = {7E160BA8-6985-4434-869A-37B5D7526FC6}
+		{4A447A14-1EE4-4E8A-83A9-17D93F1A6F2D} = {7E160BA8-6985-4434-869A-37B5D7526FC6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BFEE1925-4514-47E4-A255-FF985CF557D7}

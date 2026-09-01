@@ -193,7 +193,7 @@ public class FanSelectionController : Controller
             QuoteDate = reprocessed.Quote.QuoteDate
         };
 
-        return View(viewModel);
+        return View("CentriSelect", viewModel);
     }
 
     [HttpGet]

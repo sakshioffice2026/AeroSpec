@@ -1,0 +1,79 @@
+@*
+    Expects ViewData["CentriStep"] = one of: "specify", "results", "quote"
+    Expects ViewData["CentriSelectionId"] (nullable int) so completed steps can be linked once a
+    selection exists.
+*@
+@{
+    var currentStep = ViewData["CentriStep"] as string ?? "specify";
+    int? selectionId = null;
+    if (ViewData["CentriSelectionId"] is int idInt)
+    {
+        selectionId = idInt;
+    }
+    else if (ViewData["CentriSelectionId"] != null && int.TryParse(ViewData["CentriSelectionId"]!.ToString(), out var parsedId))
+    {
+        selectionId = parsedId;
+    }
+
+    var steps = new[]
+    {
+        new { Id = "specify", Label = "Specify Duty" },
+        new { Id = "results", Label = "Results" },
+        new { Id = "quote",   Label = "Quote" }
+    };
+
+    var order = steps.Select(s => s.Id).ToList();
+    var curIdx = order.IndexOf(currentStep);
+}
+
+<header class="topbar">
+    <div class="topbar-inner">
+        <a asp-controller="Home" asp-action="Index" class="brand-link">
+            <span class="logo-box">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="1.8" fill="currentColor" stroke="none" />
+                    <path d="M12 12c0-4 2-7 5-7 1.5 0 2.5 1.2 2 2.6C18 10 15 12 12 12" />
+                    <path d="M12 12c-4 0-7-2-7-5 0-1.5 1.2-2.5 2.6-2C10 6 12 9 12 12" />
+                    <path d="M12 12c0 4-2 7-5 7-1.5 0-2.5-1.2-2-2.6C6 14 9 12 12 12" />
+                </svg>
+            </span>
+            <span>
+                <span class="brand-name" style="display:block;">AEROSPEC SELECT</span>
+                <span class="brand-sub">Centrifugal Fan Selection Software</span>
+            </span>
+        </a>
+    </div>
+</header>
+
+<div class="stepper-bar">
+    <div class="stepper">
+        @for (var i = 0; i < steps.Length; i++)
+        {
+            var s = steps[i];
+            var active = i == curIdx;
+            var done = i < curIdx;
+            var reachable = s.Id == "specify" || selectionId.HasValue;
+
+            <a class="step-btn @(reachable ? "" : "disabled")"
+               href="@(!reachable ? "#" : s.Id == "specify" ? Url.Action("Specification", "FanSelection") : s.Id == "results" ? Url.Action("Results", "FanSelection", new { id = selectionId }) : Url.Action("Quote", "Quote", new { id = selectionId }))">
+                <span class="step-circle @(active ? "active" : (done ? "done" : ""))">
+                    @if (done)
+                    {
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" /><polyline points="8 12.5 11 15.5 16 9" /></svg>
+                    }
+                    else
+                    {
+                        @(i + 1)
+                    }
+                </span>
+                <span class="step-label @(active ? "active" : "")">@s.Label</span>
+            </a>
+            if (i < steps.Length - 1)
+            {
+                <span class="step-chevron">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
+                </span>
+            }
+        }
+    </div>
+</div>

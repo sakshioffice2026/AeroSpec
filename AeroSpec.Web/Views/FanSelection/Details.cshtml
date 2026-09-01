@@ -1,34 +1,64 @@
-﻿@model AeroSpec.Web.ViewModels.FanSelectionHistoryViewModel
+@model AeroSpec.Web.ViewModels.FanSelectionHistoryViewModel
 @{
-    ViewData["Title"] = "Selection Details";
+    ViewData["Title"] = "Selection Specification";
+    ViewData["CentriStep"] = "results";
+    ViewData["CentriSelectionId"] = Model.Id;
 }
 
-<h1>Selection Details</h1>
+@await Html.PartialAsync("_CentriStepper")
 
-<div class="card mb-4">
-    <div class="card-body">
-        <div class="row mb-2">
-            <div class="col-md-4"><strong>Project:</strong> @Model.ProjectName</div>
-            <div class="col-md-4"><strong>Tag:</strong> @Model.Tag</div>
-            <div class="col-md-4"><strong>Date:</strong> @Model.CreatedDate.ToString("yyyy-MM-dd HH:mm")</div>
+<main>
+    <div class="wrap wrap-md">
+        <div class="card pad">
+            <div class="spec-header">
+                <div>
+                    <div style="font-weight:700;font-size:18px;color:var(--navy);">@Model.ProjectName</div>
+                    <div style="font-size:11px;color:var(--muted);">@Model.CreatedDate.ToString("MMMM d, yyyy · HH:mm")</div>
+                </div>
+                <span class="chip">@Model.SelectedFanId</span>
+            </div>
+
+            <div class="grid grid-2">
+                <div>
+                    <div class="section-label">Project</div>
+                    <div class="spec-row"><span>Project name</span><span>@Model.ProjectName</span></div>
+                    <div class="spec-row"><span>Tag</span><span>@(string.IsNullOrWhiteSpace(Model.Tag) ? "—" : Model.Tag)</span></div>
+                    <div class="spec-row"><span>Quantity</span><span>@Model.Quantity</span></div>
+                    <div class="spec-row"><span>Fan type</span><span>@Model.FanType</span></div>
+                </div>
+                <div>
+                    <div class="section-label">Duty point</div>
+                    <div class="spec-row"><span>Required CFM</span><span>@Model.RequiredCfm.ToString("N0")</span></div>
+                    <div class="spec-row"><span>Required SP</span><span>@Model.RequiredSp.ToString("F2") in. wg</span></div>
+                    <div class="spec-row"><span>Selected size</span><span>@Model.SelectedFanId</span></div>
+                </div>
+            </div>
+
+            <div class="grid grid-3" style="margin-top:20px;">
+                <div class="stat-row">
+                    <div class="stat-label">Speed (RPM)</div>
+                    <div class="stat-value-row"><span class="stat-value mono">@Model.SelectedRpm</span></div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-label">Motor (HP)</div>
+                    <div class="stat-value-row"><span class="stat-value mono">@Model.SelectedMotorHp</span></div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-label">Efficiency (%)</div>
+                    <div class="stat-value-row"><span class="stat-value mono">@Model.SelectedEfficiency.ToString("F1")</span></div>
+                </div>
+            </div>
         </div>
-        <div class="row mb-2">
-            <div class="col-md-4"><strong>Required CFM:</strong> @Model.RequiredCfm.ToString("N0")</div>
-            <div class="col-md-4"><strong>Required SP:</strong> @Model.RequiredSp.ToString("F2") in. wg</div>
-            <div class="col-md-4"><strong>Fan Type:</strong> @Model.FanType</div>
-        </div>
-        <div class="row mb-2">
-            <div class="col-md-4"><strong>Selected Fan:</strong> @Model.SelectedFanId</div>
-            <div class="col-md-4"><strong>RPM:</strong> @Model.SelectedRpm</div>
-            <div class="col-md-4"><strong>Motor HP:</strong> @Model.SelectedMotorHp</div>
-        </div>
-        <div class="row">
-            <div class="col-md-4"><strong>Efficiency:</strong> @Model.SelectedEfficiency.ToString("F1")%</div>
-            <div class="col-md-4"><strong>Quantity:</strong> @Model.Quantity</div>
+
+        <div class="btn-row">
+            <a asp-action="History" class="btn btn-ghost">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg>
+                Back to history
+            </a>
+            <div style="display:flex;gap:12px;">
+                <a asp-action="Results" asp-route-id="@Model.Id" class="btn btn-ghost">View full results</a>
+                <a asp-controller="Quote" asp-action="Quote" asp-route-id="@Model.Id" class="btn btn-primary">View quote</a>
+            </div>
         </div>
     </div>
-</div>
-
-<a asp-action="Results" asp-route-id="@Model.Id" class="btn btn-primary">View Full Results</a>
-<a asp-controller="Quote" asp-action="Quote" asp-route-id="@Model.Id" class="btn btn-outline-primary">View Quote</a>
-<a asp-action="History" class="btn btn-outline-secondary">Back to History</a>
+</main>

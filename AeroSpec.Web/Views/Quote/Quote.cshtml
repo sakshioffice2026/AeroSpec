@@ -1,51 +1,91 @@
-﻿@model AeroSpec.Web.ViewModels.QuoteViewModel
+@model AeroSpec.Web.ViewModels.QuoteViewModel
 @{
-    ViewData["Title"] = "Quote";
+    ViewData["Title"] = "Budgetary Quote";
+    ViewData["CentriStep"] = "quote";
+    ViewData["CentriSelectionId"] = ViewContext.RouteData.Values["id"];
 }
 
-<h1>Quote</h1>
+@await Html.PartialAsync("_CentriStepper")
 
-<div class="card">
-    <div class="card-header">
-        Quote — @Model.ProjectName @(string.IsNullOrWhiteSpace(Model.Tag) ? "" : $"({Model.Tag})")
-    </div>
-    <div class="card-body">
-        <div class="row mb-2">
-            <div class="col-md-4"><strong>Fan Type:</strong> @Model.FanTypeLabel</div>
-            <div class="col-md-4"><strong>Selected Size:</strong> @Model.SelectedSizeId</div>
-            <div class="col-md-4"><strong>Arrangement:</strong> @Model.Arrangement</div>
+<main>
+    <div class="wrap wrap-md">
+        <div class="btn-row" style="margin-top:0;margin-bottom:20px;">
+            <h1 style="font-size:24px;font-weight:700;">Budgetary quote</h1>
+            <a asp-controller="FanSelection" asp-action="Specification" class="btn btn-ghost">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg>
+                Back to specification
+            </a>
         </div>
 
-        <table class="table table-sm mt-3">
-            <tbody>
-                <tr>
-                    <th>Unit Price</th>
-                    <td class="text-end">@Model.UnitPrice.ToString("C0")</td>
-                </tr>
-                <tr>
-                    <th>Quantity</th>
-                    <td class="text-end">@Model.Qty</td>
-                </tr>
-                <tr>
-                    <th>Subtotal</th>
-                    <td class="text-end">@Model.Subtotal.ToString("C0")</td>
-                </tr>
-                <tr>
-                    <th>Freight</th>
-                    <td class="text-end">@Model.Freight.ToString("C0")</td>
-                </tr>
-                <tr class="table-active">
-                    <th>Total</th>
-                    <td class="text-end fw-bold">@Model.Total.ToString("C0")</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="card pad">
+            <div class="spec-header">
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1.8" fill="var(--navy)" stroke="none" /><path d="M12 12c0-4 2-7 5-7 1.5 0 2.5 1.2 2 2.6C18 10 15 12 12 12" /><path d="M12 12c-4 0-7-2-7-5 0-1.5 1.2-2.5 2.6-2C10 6 12 9 12 12" /><path d="M12 12c0 4-2 7-5 7-1.5 0-2.5-1.2-2-2.6C6 14 9 12 12 12" /></svg>
+                    <div>
+                        <div style="font-weight:700;font-size:18px;color:var(--navy);">Budgetary Quotation</div>
+                        <div style="font-size:11px;color:var(--muted);">@Model.QuoteDate.ToString("MMMM d, yyyy")</div>
+                    </div>
+                </div>
+            </div>
 
-        <p class="text-muted">Quote Date: @Model.QuoteDate.ToString("yyyy-MM-dd")</p>
+            <div class="grid grid-3">
+                <div class="spec-row"><span>Project name</span><span>@(string.IsNullOrWhiteSpace(Model.ProjectName) ? "Untitled project" : Model.ProjectName)</span></div>
+                <div class="spec-row"><span>Tag number</span><span>@(string.IsNullOrWhiteSpace(Model.Tag) ? "—" : Model.Tag)</span></div>
+                <div class="spec-row"><span>Quantity</span><span>@Model.Qty</span></div>
+            </div>
+
+            <div class="table-wrap" style="margin-top:16px;">
+                <table class="table table-compact">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Description</th>
+                            <th>Qty</th>
+                            <th>Unit price</th>
+                            <th>Ext. price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="mono" style="font-weight:600;">@Model.SelectedSizeId</td>
+                            <td style="color:var(--muted);">@Model.FanTypeLabel, @Model.Arrangement</td>
+                            <td class="mono">@Model.Qty</td>
+                            <td class="mono">@Model.UnitPrice.ToString("C0")</td>
+                            <td class="mono">@Model.Subtotal.ToString("C0")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="display:flex;justify-content:flex-end;margin-top:16px;">
+                <div style="width:260px;">
+                    <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;">
+                        <span style="color:var(--muted);">Subtotal</span><span class="mono">@Model.Subtotal.ToString("C0")</span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;">
+                        <span style="color:var(--muted);">Est. freight</span><span class="mono">@Model.Freight.ToString("C0")</span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:700;padding:10px 0 2px;margin-top:4px;border-top:2px solid var(--navy);color:var(--navy);">
+                        <span>Total</span><span class="mono">@Model.Total.ToString("C0")</span>
+                    </div>
+                </div>
+            </div>
+
+            <p style="font-size:11px;color:var(--muted);margin-top:22px;">
+                Budgetary estimate only — subject to confirmation upon formal engineering review and proposal.
+                Freight is estimated and will be confirmed at time of order.
+            </p>
+        </div>
+
+        <div class="btn-row">
+            <a asp-controller="FanSelection" asp-action="Specification" class="btn btn-ghost">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 3-6.2" /><polyline points="4 4 4 8 8 8" /></svg>
+                Start new selection
+            </a>
+            <button onclick="window.print()" class="btn btn-primary" type="button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8.5" width="14" height="7" rx="1" /><path d="M7 8.5V4h10v4.5" /><path d="M7 15.5V20h10v-4.5" /></svg>
+                Print / save as PDF
+            </button>
+        </div>
     </div>
-</div>
-
-<div class="mt-3">
-    <button onclick="window.print()" class="btn btn-primary">Print Quote</button>
-    <a asp-controller="FanSelection" asp-action="History" class="btn btn-outline-secondary">Back to History</a>
-</div>
+</main>

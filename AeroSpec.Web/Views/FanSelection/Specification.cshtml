@@ -1,103 +1,129 @@
-﻿@model AeroSpec.Web.ViewModels.SpecificationInputViewModel
+@model AeroSpec.Web.ViewModels.SpecificationInputViewModel
 @{
-    ViewData["Title"] = "Fan Specification";
+    ViewData["Title"] = "Specify Duty Point";
+    ViewData["CentriStep"] = "specify";
 }
 
-<h1>Fan Specification</h1>
+@await Html.PartialAsync("_CentriStepper")
 
-@if (TempData["SelectionMessage"] != null)
-{
-    <div class="alert alert-warning">@TempData["SelectionMessage"]</div>
-}
+<main>
+    <div class="wrap wrap-md">
+        <h1 style="font-size:24px;font-weight:700;">Specify duty point</h1>
+        <p style="font-size:14px;color:var(--muted);margin:6px 0 24px;">
+            Enter the required performance and application details to search the centrifugal fan catalog.
+        </p>
 
-<div class="row">
-    <div class="col-md-8">
+        @if (TempData["SelectionMessage"] != null)
+        {
+            <div class="info-box" style="background:#F7E7E5;color:var(--red);margin-bottom:20px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.9 18a1.7 1.7 0 0 0 1.5 2.5h17.2a1.7 1.7 0 0 0 1.5-2.5L13.7 3.9a1.7 1.7 0 0 0-3.4 0Z" /><line x1="12" y1="9.5" x2="12" y2="13.5" /><circle cx="12" cy="16.7" r=".1" fill="currentColor" /></svg>
+                <span>@TempData["SelectionMessage"]</span>
+            </div>
+        }
+
         <form asp-action="Specification" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="field-error" style="margin-bottom:16px;"></div>
 
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label asp-for="ProjectName" class="form-label"></label>
-                    <input asp-for="ProjectName" class="form-control" />
-                    <span asp-validation-for="ProjectName" class="text-danger"></span>
+            <div class="grid grid-2">
+                <div class="card pad">
+                    <div class="section-label">Performance requirements</div>
+
+                    <label class="field">
+                        <span class="field-label">@Html.DisplayNameFor(m => m.Cfm)</span>
+                        <input asp-for="Cfm" class="input" type="number" step="0.01" placeholder="e.g. 15000" />
+                        <span asp-validation-for="Cfm" class="field-error"></span>
+                    </label>
+
+                    <label class="field">
+                        <span class="field-label">@Html.DisplayNameFor(m => m.Sp)</span>
+                        <input asp-for="Sp" class="input" type="number" step="0.01" placeholder="e.g. 3.5" />
+                        <span asp-validation-for="Sp" class="field-error"></span>
+                    </label>
+
+                    <label class="field">
+                        <span class="field-label">@Html.DisplayNameFor(m => m.MaxTipSpeed)</span>
+                        <input asp-for="MaxTipSpeed" class="input" type="number" />
+                        <span class="field-hint">Restricts selections to wheels within this mechanical limit.</span>
+                        <span asp-validation-for="MaxTipSpeed" class="field-error"></span>
+                    </label>
+
+                    <label class="field">
+                        <span class="field-label">@Html.DisplayNameFor(m => m.SoundLimit)</span>
+                        <input asp-for="SoundLimit" class="input" type="number" placeholder="No limit" />
+                        <span asp-validation-for="SoundLimit" class="field-error"></span>
+                    </label>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label asp-for="Tag" class="form-label"></label>
-                    <input asp-for="Tag" class="form-control" />
-                    <span asp-validation-for="Tag" class="text-danger"></span>
+
+                <div class="card pad">
+                    <div class="section-label">Air conditions</div>
+
+                    <label class="field">
+                        <span class="field-label">@Html.DisplayNameFor(m => m.Elevation)</span>
+                        <input asp-for="Elevation" class="input" type="number" />
+                        <span asp-validation-for="Elevation" class="field-error"></span>
+                    </label>
+
+                    <label class="field">
+                        <span class="field-label">@Html.DisplayNameFor(m => m.Temperature)</span>
+                        <input asp-for="Temperature" class="input" type="number" />
+                        <span asp-validation-for="Temperature" class="field-error"></span>
+                    </label>
+
+                    <div class="section-label">Fan configuration</div>
+
+                    <label class="field">
+                        <span class="field-label">@Html.DisplayNameFor(m => m.FanType)</span>
+                        <select asp-for="FanType" class="input">
+                            @foreach (var ft in Model.AvailableFanTypes)
+                            {
+                                <option value="@ft.TypeId">@ft.Label</option>
+                            }
+                        </select>
+                        <span asp-validation-for="FanType" class="field-error"></span>
+                    </label>
+
+                    <label class="field">
+                        <span class="field-label">@Html.DisplayNameFor(m => m.Arrangement)</span>
+                        <select asp-for="Arrangement" class="input">
+                            <option value="Arrangement 4 – Direct Drive">Arrangement 4 – Direct Drive</option>
+                            <option value="Arrangement 9 – Belt Drive">Arrangement 9 – Belt Drive</option>
+                        </select>
+                        <span asp-validation-for="Arrangement" class="field-error"></span>
+                    </label>
+                </div>
+
+                <div class="card pad" style="grid-column:1/-1;">
+                    <div class="section-label">Project info — optional</div>
+                    <div class="grid grid-3">
+                        <label class="field">
+                            <span class="field-label">@Html.DisplayNameFor(m => m.ProjectName)</span>
+                            <input asp-for="ProjectName" class="input" placeholder="e.g. Riverside Distribution Center" />
+                            <span asp-validation-for="ProjectName" class="field-error"></span>
+                        </label>
+                        <label class="field">
+                            <span class="field-label">@Html.DisplayNameFor(m => m.Tag)</span>
+                            <input asp-for="Tag" class="input" placeholder="e.g. SF-1" />
+                            <span asp-validation-for="Tag" class="field-error"></span>
+                        </label>
+                        <label class="field">
+                            <span class="field-label">@Html.DisplayNameFor(m => m.Qty)</span>
+                            <input asp-for="Qty" class="input" type="number" />
+                            <span asp-validation-for="Qty" class="field-error"></span>
+                        </label>
+                    </div>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label asp-for="Cfm" class="form-label"></label>
-                    <input asp-for="Cfm" class="form-control" type="number" step="0.01" />
-                    <span asp-validation-for="Cfm" class="text-danger"></span>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label asp-for="Sp" class="form-label"></label>
-                    <input asp-for="Sp" class="form-control" type="number" step="0.01" />
-                    <span asp-validation-for="Sp" class="text-danger"></span>
-                </div>
+            <div class="btn-row end">
+                <a asp-action="History" class="btn btn-ghost">View history</a>
+                <button type="submit" class="btn btn-primary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7" /><line x1="21" y1="21" x2="16.6" y2="16.6" /></svg>
+                    Find fan selections
+                </button>
             </div>
-
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label asp-for="Elevation" class="form-label"></label>
-                    <input asp-for="Elevation" class="form-control" type="number" />
-                    <span asp-validation-for="Elevation" class="text-danger"></span>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label asp-for="Temperature" class="form-label"></label>
-                    <input asp-for="Temperature" class="form-control" type="number" />
-                    <span asp-validation-for="Temperature" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label asp-for="FanType" class="form-label"></label>
-                    <select asp-for="FanType" class="form-select">
-                        @foreach (var ft in Model.AvailableFanTypes)
-                        {
-                            <option value="@ft.TypeId">@ft.Label</option>
-                        }
-                    </select>
-                    <span asp-validation-for="FanType" class="text-danger"></span>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label asp-for="Arrangement" class="form-label"></label>
-                    <select asp-for="Arrangement" class="form-select">
-                        <option value="Arrangement 4 – Direct Drive">Arrangement 4 – Direct Drive</option>
-                        <option value="Arrangement 9 – Belt Drive">Arrangement 9 – Belt Drive</option>
-                    </select>
-                    <span asp-validation-for="Arrangement" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <label asp-for="MaxTipSpeed" class="form-label"></label>
-                    <input asp-for="MaxTipSpeed" class="form-control" type="number" />
-                    <span asp-validation-for="MaxTipSpeed" class="text-danger"></span>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label asp-for="SoundLimit" class="form-label"></label>
-                    <input asp-for="SoundLimit" class="form-control" type="number" />
-                    <span asp-validation-for="SoundLimit" class="text-danger"></span>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label asp-for="Qty" class="form-label"></label>
-                    <input asp-for="Qty" class="form-control" type="number" />
-                    <span asp-validation-for="Qty" class="text-danger"></span>
-                </div>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Select Fan</button>
-            <a asp-action="History" class="btn btn-outline-secondary">View History</a>
         </form>
     </div>
-</div>
+</main>
 
 @section Scripts {
     @{

@@ -11,6 +11,7 @@
 		<ProjectReference Include="..\AeroSpec.Models\AeroSpec.Models.csproj" />
 		<ProjectReference Include="..\AeroSpec.Repositories\AeroSpec.Repositories.csproj" />
 		<ProjectReference Include="..\AeroSpec.Database\AeroSpec.Database.csproj" />
+		<ProjectReference Include="..\AeroSpec.Utilities\AeroSpec.Utilities.csproj" />
 	</ItemGroup>
 
 </Project>

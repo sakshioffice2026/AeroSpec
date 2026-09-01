@@ -1,0 +1,174 @@
+﻿@model AeroSpec.Web.ViewModels.FanSelectionResultViewModel
+@{
+    ViewData["Title"] = "Selection Results";
+
+    var allPoints = Model.Curve.Points.Select(p => p.FanSp)
+        .Concat(Model.Curve.Points.Select(p => p.SysSp))
+        .Concat(Model.Curve.GhostLow.Select(g => g.Sp))
+        .Concat(Model.Curve.GhostHigh.Select(g => g.Sp))
+        .Append(Model.Curve.DutySp)
+        .ToList();
+    var allCfms = Model.Curve.Points.Select(p => p.Cfm)
+        .Concat(Model.Curve.GhostLow.Select(g => g.Cfm))
+        .Concat(Model.Curve.GhostHigh.Select(g => g.Cfm))
+        .Append(Model.Curve.DutyCfm)
+        .ToList();
+
+    var minCfm = allCfms.Count > 0 ? allCfms.Min() : 0;
+    var maxCfm = allCfms.Count > 0 ? allCfms.Max() : 1;
+    var minSp = allPoints.Count > 0 ? Math.Min(0, allPoints.Min()) : 0;
+    var maxSp = allPoints.Count > 0 ? allPoints.Max() : 1;
+
+    const int chartWidth = 700;
+    const int chartHeight = 360;
+    const int padding = 50;
+
+    double ScaleX(double cfm) => maxCfm == minCfm
+        ? padding
+        : padding + (cfm - minCfm) / (maxCfm - minCfm) * (chartWidth - 2 * padding);
+
+    double ScaleY(double sp) => maxSp == minSp
+        ? chartHeight - padding
+        : chartHeight - padding - (sp - minSp) / (maxSp - minSp) * (chartHeight - 2 * padding);
+
+    string BuildPolyline(IEnumerable<(double Cfm, double Sp)> pts) =>
+        string.Join(" ", pts.Select(p => $"{ScaleX(p.Cfm).ToString("F1", System.Globalization.CultureInfo.InvariantCulture)},{ScaleY(p.Sp).ToString("F1", System.Globalization.CultureInfo.InvariantCulture)}"));
+
+    var fanCurve = BuildPolyline(Model.Curve.Points.Select(p => (p.Cfm, p.FanSp)));
+    var sysCurve = BuildPolyline(Model.Curve.Points.Select(p => (p.Cfm, p.SysSp)));
+    var ghostLow = BuildPolyline(Model.Curve.GhostLow.Select(g => (g.Cfm, g.Sp)));
+    var ghostHigh = BuildPolyline(Model.Curve.GhostHigh.Select(g => (g.Cfm, g.Sp)));
+    var dutyX = ScaleX(Model.Curve.DutyCfm);
+    var dutyY = ScaleY(Model.Curve.DutySp);
+}
+
+<h1>Selection Results</h1>
+
+@if (!Model.HasFeasibleFan)
+{
+    <div class="alert alert-danger">@Model.Message</div>
+}
+
+<div class="card mb-4">
+    <div class="card-header">Specification Summary</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-3"><strong>Project:</strong> @Model.Specification.ProjectName</div>
+            <div class="col-md-3"><strong>Tag:</strong> @Model.Specification.Tag</div>
+            <div class="col-md-3"><strong>CFM:</strong> @Model.Specification.Cfm.ToString("N0")</div>
+            <div class="col-md-3"><strong>SP:</strong> @Model.Specification.Sp.ToString("F2") in. wg</div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-3"><strong>Elevation:</strong> @Model.Specification.Elevation ft</div>
+            <div class="col-md-3"><strong>Temperature:</strong> @Model.Specification.Temperature °F</div>
+            <div class="col-md-3"><strong>Arrangement:</strong> @Model.Specification.Arrangement</div>
+            <div class="col-md-3"><strong>Density Ratio:</strong> @Model.DensityRatio.ToString("F3")</div>
+        </div>
+    </div>
+</div>
+
+@if (Model.SelectedFan != null)
+{
+    <div class="card mb-4 border-success">
+        <div class="card-header bg-success text-white">Selected Fan — @Model.SelectedFan.SizeId</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3"><strong>Diameter:</strong> @Model.SelectedFan.DiameterIn.ToString("F1") in</div>
+                <div class="col-md-3"><strong>RPM:</strong> @Model.SelectedFan.Rpm</div>
+                <div class="col-md-3"><strong>Efficiency:</strong> @Model.SelectedFan.EffPct%</div>
+                <div class="col-md-3"><strong>BHP:</strong> @Model.SelectedFan.Bhp.ToString("F2")</div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-3"><strong>Motor HP:</strong> @Model.SelectedFan.MotorHp</div>
+                <div class="col-md-3"><strong>Tip Speed:</strong> @Model.SelectedFan.TipSpeed fpm</div>
+                <div class="col-md-3"><strong>Outlet Velocity:</strong> @Model.SelectedFan.OutletVelocity fpm</div>
+                <div class="col-md-3"><strong>Sound:</strong> @Model.SelectedFan.SoundDba dBA</div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="card mb-4">
+    <div class="card-header">Performance Curve</div>
+    <div class="card-body">
+        <svg viewBox="0 0 @chartWidth @chartHeight" class="img-fluid" role="img" aria-label="Fan performance curve">
+            <rect x="0" y="0" width="@chartWidth" height="@chartHeight" fill="#ffffff" />
+            <line x1="@padding" y1="@(chartHeight - padding)" x2="@(chartWidth - padding)" y2="@(chartHeight - padding)" stroke="#adb5bd" />
+            <line x1="@padding" y1="@padding" x2="@padding" y2="@(chartHeight - padding)" stroke="#adb5bd" />
+            <polyline points="@fanCurve" fill="none" stroke="#0d6efd" stroke-width="2" />
+            <polyline points="@sysCurve" fill="none" stroke="#dc3545" stroke-width="2" />
+            @if (!string.IsNullOrWhiteSpace(ghostLow))
+            {
+                <polyline points="@ghostLow" fill="none" stroke="#adb5bd" stroke-width="1" stroke-dasharray="4,3" />
+            }
+            @if (!string.IsNullOrWhiteSpace(ghostHigh))
+            {
+                <polyline points="@ghostHigh" fill="none" stroke="#adb5bd" stroke-width="1" stroke-dasharray="4,3" />
+            }
+            <circle cx="@dutyX.ToString("F1", System.Globalization.CultureInfo.InvariantCulture)" cy="@dutyY.ToString("F1", System.Globalization.CultureInfo.InvariantCulture)" r="5" fill="#198754" />
+            <text x="@(dutyX + 8)" y="@(dutyY - 8)" font-size="12" fill="#198754">Duty Point</text>
+        </svg>
+        <div class="mt-2">
+            <span class="badge" style="background-color:#0d6efd;">&nbsp;</span> Fan Curve
+            <span class="badge ms-3" style="background-color:#dc3545;">&nbsp;</span> System Curve
+            <span class="badge ms-3" style="background-color:#adb5bd;">&nbsp;</span> Adjacent Sizes
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">All Evaluated Sizes</div>
+    <div class="card-body table-responsive">
+        <table class="table table-sm table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>Size</th>
+                    <th>Diameter</th>
+                    <th>Feasible</th>
+                    <th>RPM</th>
+                    <th>Eff %</th>
+                    <th>BHP</th>
+                    <th>Motor HP</th>
+                    <th>Tip Speed</th>
+                    <th>Outlet Vel.</th>
+                    <th>Sound dBA</th>
+                    <th>Reason</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var r in Model.AllResults)
+                {
+                    <tr class="@(r.IsSelected ? "table-success" : "")">
+                        <td>@r.SizeId @(r.IsSelected ? "★" : "")</td>
+                        <td>@r.DiameterIn.ToString("F1")</td>
+                        <td>@(r.Feasible ? "Yes" : "No")</td>
+                        <td>@r.Rpm</td>
+                        <td>@r.EffPct</td>
+                        <td>@r.Bhp.ToString("F2")</td>
+                        <td>@r.MotorHp</td>
+                        <td>@r.TipSpeed</td>
+                        <td>@r.OutletVelocity</td>
+                        <td>@r.SoundDba</td>
+                        <td>@r.Reason</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">Quote</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-3"><strong>Fan Type:</strong> @Model.Quote.FanTypeLabel</div>
+            <div class="col-md-3"><strong>Unit Price:</strong> @Model.Quote.UnitPrice.ToString("C0")</div>
+            <div class="col-md-3"><strong>Qty:</strong> @Model.Quote.Qty</div>
+            <div class="col-md-3"><strong>Total:</strong> @Model.Quote.Total.ToString("C0")</div>
+        </div>
+    </div>
+</div>
+
+<a asp-action="Specification" class="btn btn-outline-secondary">New Selection</a>
+<a asp-controller="Quote" asp-action="Quote" asp-route-id="@Model.SavedSelectionId" class="btn btn-primary">View Full Quote</a>
+<a asp-action="History" class="btn btn-outline-secondary">History</a>

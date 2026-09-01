@@ -1,0 +1,106 @@
+﻿@model AeroSpec.Web.ViewModels.SpecificationInputViewModel
+@{
+    ViewData["Title"] = "Fan Specification";
+}
+
+<h1>Fan Specification</h1>
+
+@if (TempData["SelectionMessage"] != null)
+{
+    <div class="alert alert-warning">@TempData["SelectionMessage"]</div>
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Specification" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="ProjectName" class="form-label"></label>
+                    <input asp-for="ProjectName" class="form-control" />
+                    <span asp-validation-for="ProjectName" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Tag" class="form-label"></label>
+                    <input asp-for="Tag" class="form-control" />
+                    <span asp-validation-for="Tag" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Cfm" class="form-label"></label>
+                    <input asp-for="Cfm" class="form-control" type="number" step="0.01" />
+                    <span asp-validation-for="Cfm" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Sp" class="form-label"></label>
+                    <input asp-for="Sp" class="form-control" type="number" step="0.01" />
+                    <span asp-validation-for="Sp" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Elevation" class="form-label"></label>
+                    <input asp-for="Elevation" class="form-control" type="number" />
+                    <span asp-validation-for="Elevation" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Temperature" class="form-label"></label>
+                    <input asp-for="Temperature" class="form-control" type="number" />
+                    <span asp-validation-for="Temperature" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="FanType" class="form-label"></label>
+                    <select asp-for="FanType" class="form-select">
+                        @foreach (var ft in Model.AvailableFanTypes)
+                        {
+                            <option value="@ft.TypeId">@ft.Label</option>
+                        }
+                    </select>
+                    <span asp-validation-for="FanType" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Arrangement" class="form-label"></label>
+                    <select asp-for="Arrangement" class="form-select">
+                        <option value="Arrangement 4 – Direct Drive">Arrangement 4 – Direct Drive</option>
+                        <option value="Arrangement 9 – Belt Drive">Arrangement 9 – Belt Drive</option>
+                    </select>
+                    <span asp-validation-for="Arrangement" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label asp-for="MaxTipSpeed" class="form-label"></label>
+                    <input asp-for="MaxTipSpeed" class="form-control" type="number" />
+                    <span asp-validation-for="MaxTipSpeed" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="SoundLimit" class="form-label"></label>
+                    <input asp-for="SoundLimit" class="form-control" type="number" />
+                    <span asp-validation-for="SoundLimit" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Qty" class="form-label"></label>
+                    <input asp-for="Qty" class="form-control" type="number" />
+                    <span asp-validation-for="Qty" class="text-danger"></span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Select Fan</button>
+            <a asp-action="History" class="btn btn-outline-secondary">View History</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

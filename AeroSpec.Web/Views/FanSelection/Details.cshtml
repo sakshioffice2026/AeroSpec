@@ -1,0 +1,34 @@
+﻿@model AeroSpec.Web.ViewModels.FanSelectionHistoryViewModel
+@{
+    ViewData["Title"] = "Selection Details";
+}
+
+<h1>Selection Details</h1>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="row mb-2">
+            <div class="col-md-4"><strong>Project:</strong> @Model.ProjectName</div>
+            <div class="col-md-4"><strong>Tag:</strong> @Model.Tag</div>
+            <div class="col-md-4"><strong>Date:</strong> @Model.CreatedDate.ToString("yyyy-MM-dd HH:mm")</div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-md-4"><strong>Required CFM:</strong> @Model.RequiredCfm.ToString("N0")</div>
+            <div class="col-md-4"><strong>Required SP:</strong> @Model.RequiredSp.ToString("F2") in. wg</div>
+            <div class="col-md-4"><strong>Fan Type:</strong> @Model.FanType</div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-md-4"><strong>Selected Fan:</strong> @Model.SelectedFanId</div>
+            <div class="col-md-4"><strong>RPM:</strong> @Model.SelectedRpm</div>
+            <div class="col-md-4"><strong>Motor HP:</strong> @Model.SelectedMotorHp</div>
+        </div>
+        <div class="row">
+            <div class="col-md-4"><strong>Efficiency:</strong> @Model.SelectedEfficiency.ToString("F1")%</div>
+            <div class="col-md-4"><strong>Quantity:</strong> @Model.Quantity</div>
+        </div>
+    </div>
+</div>
+
+<a asp-action="Results" asp-route-id="@Model.Id" class="btn btn-primary">View Full Results</a>
+<a asp-controller="Quote" asp-action="Quote" asp-route-id="@Model.Id" class="btn btn-outline-primary">View Quote</a>
+<a asp-action="History" class="btn btn-outline-secondary">Back to History</a>

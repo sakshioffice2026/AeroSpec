@@ -6,6 +6,7 @@ public interface IUnitOfWork : IDisposable
     IFanTypeRepository FanTypeRepository { get; }
     IPerformanceDataRepository PerformanceDataRepository { get; }
     IFanSelectionRepository FanSelectionRepository { get; }
+    IAccountRepository AccountRepository { get; }
 
     Task<bool> CompleteAsync();
 }

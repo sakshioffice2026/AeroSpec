@@ -10,6 +10,7 @@ public class UnitOfWork : IUnitOfWork
     private IFanTypeRepository? _fanTypeRepository;
     private IPerformanceDataRepository? _performanceDataRepository;
     private IFanSelectionRepository? _fanSelectionRepository;
+    private IAccountRepository? _accountRepository;
 
     public UnitOfWork(ApplicationDbContext context)
     {
@@ -27,6 +28,9 @@ public class UnitOfWork : IUnitOfWork
 
     public IFanSelectionRepository FanSelectionRepository =>
         _fanSelectionRepository ??= new FanSelectionRepository(_context);
+
+    public IAccountRepository AccountRepository =>
+        _accountRepository ??= new AccountRepository(_context);
 
     public async Task<bool> CompleteAsync()
     {

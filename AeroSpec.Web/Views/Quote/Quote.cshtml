@@ -1,0 +1,51 @@
+﻿@model AeroSpec.Web.ViewModels.QuoteViewModel
+@{
+    ViewData["Title"] = "Quote";
+}
+
+<h1>Quote</h1>
+
+<div class="card">
+    <div class="card-header">
+        Quote — @Model.ProjectName @(string.IsNullOrWhiteSpace(Model.Tag) ? "" : $"({Model.Tag})")
+    </div>
+    <div class="card-body">
+        <div class="row mb-2">
+            <div class="col-md-4"><strong>Fan Type:</strong> @Model.FanTypeLabel</div>
+            <div class="col-md-4"><strong>Selected Size:</strong> @Model.SelectedSizeId</div>
+            <div class="col-md-4"><strong>Arrangement:</strong> @Model.Arrangement</div>
+        </div>
+
+        <table class="table table-sm mt-3">
+            <tbody>
+                <tr>
+                    <th>Unit Price</th>
+                    <td class="text-end">@Model.UnitPrice.ToString("C0")</td>
+                </tr>
+                <tr>
+                    <th>Quantity</th>
+                    <td class="text-end">@Model.Qty</td>
+                </tr>
+                <tr>
+                    <th>Subtotal</th>
+                    <td class="text-end">@Model.Subtotal.ToString("C0")</td>
+                </tr>
+                <tr>
+                    <th>Freight</th>
+                    <td class="text-end">@Model.Freight.ToString("C0")</td>
+                </tr>
+                <tr class="table-active">
+                    <th>Total</th>
+                    <td class="text-end fw-bold">@Model.Total.ToString("C0")</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p class="text-muted">Quote Date: @Model.QuoteDate.ToString("yyyy-MM-dd")</p>
+    </div>
+</div>
+
+<div class="mt-3">
+    <button onclick="window.print()" class="btn btn-primary">Print Quote</button>
+    <a asp-controller="FanSelection" asp-action="History" class="btn btn-outline-secondary">Back to History</a>
+</div>

@@ -14,6 +14,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<FanType> FanTypes => Set<FanType>();
     public DbSet<PerformanceData> PerformanceData => Set<PerformanceData>();
     public DbSet<FanSelection> FanSelections => Set<FanSelection>();
+    public DbSet<AppUser> Users => Set<AppUser>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -72,6 +73,16 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.SelectedBhp).HasPrecision(12, 2);
             entity.Property(e => e.SelectedEfficiency).HasPrecision(5, 2);
             entity.Property(e => e.DensityRatio).HasPrecision(10, 4);
+        });
+
+        builder.Entity<AppUser>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Email).IsUnique();
+            entity.Property(e => e.FirstName).HasMaxLength(100).IsRequired();
+            entity.Property(e => e.LastName).HasMaxLength(100).IsRequired();
+            entity.Property(e => e.Email).HasMaxLength(255).IsRequired();
+            entity.Property(e => e.Role).HasMaxLength(50).IsRequired();
         });
     }
 }

@@ -1,22 +1,1433 @@
+/* =========================================================
+AeroSpec - Global Site Styles
+File: wwwroot/css/site.css
+========================================================= */
+
+/* =========================================================
+
+1. ROOT / DESIGN TOKENS
+   ========================================================= */
+
+:root {
+    --aero-primary: #123b63;
+    --aero-primary-dark: #0b2945;
+    --aero-primary-light: #eaf2f9;
+    --aero-accent: #1d6fa5;
+    --aero-bg: #f4f7fa;
+    --aero-surface: #ffffff;
+    --aero-surface-soft: #f8fafc;
+    --aero-border: #d9e1e8;
+    --aero-border-dark: #c5d0da;
+    --aero-text: #17212b;
+    --aero-text-soft: #5d6b78;
+    --aero-text-muted: #7b8792;
+    --aero-success: #19734a;
+    --aero-success-bg: #eaf7f0;
+    --aero-danger: #b33a3a;
+    --aero-danger-bg: #fff0f0;
+    --aero-warning: #9a6810;
+    --aero-warning-bg: #fff7df;
+    --aero-info: #145d88;
+    --aero-info-bg: #eaf5fb;
+    --aero-shadow-sm: 0 2px 8px rgba(18, 59, 99, 0.06);
+    --aero-shadow: 0 8px 25px rgba(18, 59, 99, 0.08);
+    --aero-shadow-lg: 0 14px 40px rgba(18, 59, 99, 0.12);
+    --aero-radius-sm: 6px;
+    --aero-radius: 10px;
+    --aero-radius-lg: 14px;
+    --aero-transition: 160ms ease;
+}
+
+/* =========================================================
+2. GLOBAL
+========================================================= */
+
 html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    font-size: 15px;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin: 0;
+    min-height: 100vh;
+    background: var(--aero-bg);
+    color: var(--aero-text);
+    font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+a {
+    color: var(--aero-primary);
+    text-decoration: none;
+}
+
+    a:hover {
+        color: var(--aero-primary-dark);
+    }
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+img {
+    max-width: 100%;
+}
+
+/* =========================================================
+3. PAGE CONTAINER
+========================================================= */
+
+.page-shell {
+    width: min(1440px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 36px 0 60px;
+}
+
+/* =========================================================
+4. PAGE HEADER
+========================================================= */
+
+.page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 28px;
+}
+
+    .page-header h1 {
+        margin: 4px 0 8px;
+        color: var(--aero-primary-dark);
+        font-size: clamp(28px, 3vw, 40px);
+        font-weight: 700;
+        letter-spacing: -0.025em;
+        line-height: 1.15;
+    }
+
+.page-subtitle {
+    max-width: 760px;
+    margin: 0;
+    color: var(--aero-text-soft);
+    font-size: 15px;
+}
+
+.eyebrow {
+    color: var(--aero-accent);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+.header-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* =========================================================
+5. BUTTONS
+========================================================= */
+
+.btn {
+    border-radius: var(--aero-radius-sm);
+    font-weight: 600;
+    transition: background-color var(--aero-transition), border-color var(--aero-transition), color var(--aero-transition), box-shadow var(--aero-transition), transform var(--aero-transition);
+}
+
+    .btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .btn:active {
+        transform: translateY(0);
+    }
+
+.btn-primary {
+    background: var(--aero-primary);
+    border-color: var(--aero-primary);
+    color: #fff;
+}
+
+    .btn-primary:hover,
+    .btn-primary:focus {
+        background: var(--aero-primary-dark);
+        border-color: var(--aero-primary-dark);
+        color: #fff;
+        box-shadow: 0 5px 14px rgba(18, 59, 99, 0.18);
+    }
+
+.btn-outline-secondary {
+    color: var(--aero-primary);
+    border-color: var(--aero-border-dark);
+    background: #fff;
+}
+
+    .btn-outline-secondary:hover,
+    .btn-outline-secondary:focus {
+        color: var(--aero-primary-dark);
+        border-color: var(--aero-primary);
+        background: var(--aero-primary-light);
+    }
+
+.btn-outline-danger {
+    color: var(--aero-danger);
+    border-color: #dfb5b5;
+    background: #fff;
+}
+
+    .btn-outline-danger:hover,
+    .btn-outline-danger:focus {
+        color: #fff;
+        background: var(--aero-danger);
+        border-color: var(--aero-danger);
+    }
+
+.btn-light {
+    color: var(--aero-text);
+    background: #fff;
+    border-color: var(--aero-border);
+}
+
+    .btn-light:hover,
+    .btn-light:focus {
+        color: var(--aero-primary-dark);
+        background: var(--aero-surface-soft);
+        border-color: var(--aero-border-dark);
+    }
+
+/* =========================================================
+6. CARDS
+========================================================= */
+
+.aero-card {
+    margin-bottom: 20px;
+    padding: 26px;
+    background: var(--aero-surface);
+    border: 1px solid var(--aero-border);
+    border-radius: var(--aero-radius-lg);
+    box-shadow: var(--aero-shadow-sm);
+}
+
+    .aero-card:hover {
+        box-shadow: var(--aero-shadow);
+    }
+
+.section-heading {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+    .section-heading.compact {
+        align-items: center;
+    }
+
+    .section-heading h2 {
+        margin: 0 0 4px;
+        color: var(--aero-primary-dark);
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 1.3;
+    }
+
+    .section-heading p {
+        margin: 0;
+            color: var(--aero-text-soft);
+        font-size: 13px;
+    }
+
+.section-icon {
+    display: flex;
+    flex: 0 0 38px;
+     align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 9px;
+    background: var(--aero-primary-light);
+    color: var(--aero-primary);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    font-size: 12px;
+}
+
+/* =========================================================
+7. FORMS
+========================================================= */
+
+.aero-form {
+    width: 100%;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.form-grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.field {
+    min-width: 0;
+}
+
+    .field label {
+        display: block;
+        margin-bottom: 7px;
+        color: var(--aero-text);
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+.form-control,
+.form-select {
+    min-height: 44px;
+     border: 1px solid var(--aero-border-dark);
+    border-radius: var(--aero-radius-sm);
+    background: #fff;
+    color: var(--aero-text);
+    box-shadow: none;
+    transition: border-color var(--aero-transition), box-shadow var(--aero-transition);
+}
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: var(--aero-accent);
+         box-shadow: 0 0 0 3px rgba(29, 111, 165, 0.12);
+        
+    }
+
+    .form-control::placeholder {
+        color: #a0aab3;
+    }
+
+.input-unit {
+    display: flex;
+    align-items: stretch;
+}
+
+    .input-unit .form-control {
+        border-radius: var(--aero-radius-sm) 0 0 var(--aero-radius-sm);
+    }
+
+    .input-unit > span {
+        display: flex;
+        align-items: center;
+        min-width: 70px;
+        padding: 0 12px;
+        border: 1px solid var(--aero-border-dark);
+        border-left: 0;
+        border-radius: 0 var(--aero-radius-sm) var(--aero-radius-sm) 0;
+        background: var(--aero-surface-soft);
+        color: var(--aero-text-soft);
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+.field .text-danger {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+/* =========================================================
+8. FAN TYPE OPTIONS
+========================================================= */
+
+.fan-type-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.fan-option {
+    position: relative;
+    display: block;
+    min-height: 110px;
+    padding: 18px 48px 18px 18px;
+    border: 1px solid var(--aero-border);
+    border-radius: var(--aero-radius);
+    background: #fff;
+    cursor: pointer;
+    transition: border-color var(--aero-transition), background-color var(--aero-transition), box-shadow var(--aero-transition), transform var(--aero-transition);
+}
+
+    .fan-option:hover {
+        border-color: var(--aero-accent);
+        background: var(--aero-primary-light);
+        transform: translateY(-1px);
+    }
+
+    .fan-option.is-selected {
+        border-color: var(--aero-primary);
+        background: var(--aero-primary-light);
+        box-shadow: inset 0 0 0 1px var(--aero-primary);
+    }
+
+    .fan-option input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+.fan-option-content {
+    display: block;
+}
+
+    .fan-option-content strong {
+        display: block;
+        margin-bottom: 7px;
+        color: var(--aero-primary-dark);
+        font-size: 15px;
+    }
+
+    .fan-option-content small {
+        display: block;
+        color: var(--aero-text-soft);
+        font-size: 11px;
+        line-height: 1.6;
+    }
+
+.radio-mark {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+     width: 19px;
+    height: 19px;
+    border: 2px solid var(--aero-border-dark);
+    border-radius: 50%;
+    background: #fff;
+}
+
+.fan-option.is-selected .radio-mark {
+    border-color: var(--aero-primary);
+}
+
+    .fan-option.is-selected .radio-mark::after {
+        content: "";
+         position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--aero-primary);
+       
+    }
+
+/* =========================================================
+9. FORM ACTIONS
+========================================================= */
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+    ``` margin-top: 24px;
+    ```
+}
+
+    .form-actions .btn-lg {
+        min-width: 190px;
+    }
+
+/* =========================================================
+10. ALERTS
+========================================================= */
+
+.aero-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    ``` margin-bottom: 20px;
+    border-radius: var(--aero-radius);
+    ```
+}
+
+.alert-info {
+    color: var(--aero-info);
+    background: var(--aero-info-bg);
+    border-color: #c5e1ef;
+}
+
+.alert-warning {
+    color: var(--aero-warning);
+    background: var(--aero-warning-bg);
+    border-color: #ead8a6;
+}
+
+/* =========================================================
+11. RESULT HERO
+========================================================= */
+
+.result-hero {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 30px;
+    ``` margin-bottom: 20px;
+    padding: 30px;
+    overflow: hidden;
+    border-radius: var(--aero-radius-lg);
+    background: linear-gradient( 135deg, var(--aero-primary-dark), var(--aero-primary) );
+    color: #fff;
+    box-shadow: var(--aero-shadow-lg);
+    ```
+}
+
+.result-hero-main {
+    min-width: 250px;
+}
+
+.result-hero .eyebrow {
+    color: #b9d8ed;
+}
+
+.result-hero h2 {
+    margin: 8px 0;
+    ``` color: #fff;
+    font-size: clamp(25px, 3vw, 36px);
+    font-weight: 700;
+    ```
+}
+
+.result-description {
+    margin: 0 0 15px;
+    ``` color: #d7e5ef;
+    ```
+}
+
+.result-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.hero-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(100px, 1fr));
+    ``` min-width: 500px;
+    ```
+}
+
+.hero-metric {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    ``` padding: 10px 20px;
+    border-left: 1px solid rgba(255, 255, 255, 0.16);
+    ```
+}
+
+    .hero-metric span {
+        margin-bottom: 5px;
+        ``` color: #b9d0df;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        ```
+    }
+
+    .hero-metric strong {
+        color: #fff;
+        ``` font-size: 24px;
+        font-weight: 700;
+        ```
+    }
+
+    .hero-metric small {
+        color: #c9dce9;
+        font-size: 11px;
+    }
+
+/* =========================================================
+12. STATUS PILLS
+========================================================= */
+
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    ``` padding: 4px 9px;
+    border: 1px solid var(--aero-border);
+    border-radius: 999px;
+    background: var(--aero-surface-soft);
+    color: var(--aero-text-soft);
+    font-size: 11px;
+    font-weight: 800;
+    white-space: nowrap;
+    ```
+}
+
+.status-success {
+    color: var(--aero-success);
+    background: var(--aero-success-bg);
+    border-color: #bfe4d0;
+}
+
+.status-danger {
+    color: var(--aero-danger);
+    background: var(--aero-danger-bg);
+    border-color: #efc3c3;
+}
+
+.result-hero .status-pill:not(.status-success):not(.status-danger) {
+    color: #e4eff7;
+    background: rgba(255, 255, 255, 0.10);
+    border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* =========================================================
+13. STAT CARDS
+========================================================= */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    ``` margin-bottom: 20px;
+    ```
+}
+
+.stat-card {
+    position: relative;
+    ``` padding: 20px;
+    border: 1px solid var(--aero-border);
+    border-radius: var(--aero-radius);
+    background: #fff;
+    box-shadow: var(--aero-shadow-sm);
+    ```
+}
+
+    .stat-card span {
+        display: block;
+        ``` margin-bottom: 6px;
+        color: var(--aero-text-soft);
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        ```
+    }
+
+    .stat-card strong {
+        display: inline-block;
+        ``` color: var(--aero-primary-dark);
+        font-size: 27px;
+        font-weight: 700;
+        line-height: 1.2;
+        ```
+    }
+
+        .stat-card strong.text-value {
+            font-size: 20px;
+        }
+
+    .stat-card small {
+        display: block;
+        ``` margin-top: 5px;
+        color: var(--aero-text-muted);
+        font-size: 11px;
+        ```
+    }
+
+/* =========================================================
+14. DETAIL GRID
+========================================================= */
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1px;
+    ``` overflow: hidden;
+    border: 1px solid var(--aero-border);
+    border-radius: var(--aero-radius);
+    ```
+}
+
+    .detail-grid > div {
+        min-height: 92px;
+        padding: 16px;
+        ``` background: var(--aero-surface-soft);
+        border-right: 1px solid var(--aero-border);
+        border-bottom: 1px solid var(--aero-border);
+        ```
+    }
+
+    .detail-grid dt {
+        margin-bottom: 5px;
+        ``` color: var(--aero-text-muted);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        ```
+    }
+
+    .detail-grid dd {
+        margin: 0;
+        ``` color: var(--aero-text);
+        font-size: 14px;
+        font-weight: 650;
+        ```
+    }
+
+/* =========================================================
+15. SELECTED FAN
+========================================================= */
+
+.selected-fan-grid {
+    display: grid;
+    grid-template-columns: 1.7fr repeat(4, 1fr);
+    gap: 0;
+    ``` overflow: hidden;
+    border: 1px solid var(--aero-border);
+    border-radius: var(--aero-radius);
+    ```
+}
+
+.selected-fan-primary {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    ``` min-height: 145px;
+    padding: 24px;
+    background: var(--aero-primary-light);
+    ```
+}
+
+.fan-size {
+    margin: 4px 0;
+    ``` color: var(--aero-primary-dark);
+    font-size: 30px;
+    font-weight: 750;
+    ```
+}
+
+.fan-diameter {
+    color: var(--aero-text-soft);
+    font-size: 13px;
+}
+
+.fan-spec {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    ``` padding: 20px;
+    border-left: 1px solid var(--aero-border);
+    ```
+}
+
+    .fan-spec span {
+        margin-bottom: 5px;
+        ``` color: var(--aero-text-muted);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        ```
+    }
+
+    .fan-spec strong {
+        color: var(--aero-primary-dark);
+        font-size: 18px;
+    }
+
+    .fan-spec small {
+        color: var(--aero-text-muted);
+        font-size: 10px;
+    }
+
+/* =========================================================
+16. TABLES
+========================================================= */
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    ``` border: 1px solid var(--aero-border);
+    border-radius: var(--aero-radius);
+    ```
+}
+
+.aero-table {
+    width: 100%;
+    margin: 0;
+    ``` border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    ```
+}
+
+    .aero-table thead th {
+        padding: 13px 12px;
+        ``` border-bottom: 1px solid var(--aero-border);
+        background: var(--aero-surface-soft);
+        color: var(--aero-text-muted);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        ```
+    }
+
+    .aero-table tbody td {
+        padding: 14px 12px;
+        ``` border-bottom: 1px solid #edf0f3;
+        color: var(--aero-text);
+        font-size: 13px;
+        vertical-align: middle;
+        ```
+    }
+
+    .aero-table tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+    .aero-table tbody tr:hover {
+        background: #f9fbfd;
+    }
+
+    .aero-table .selected-row {
+        background: var(--aero-primary-light);
+    }
+
+        .aero-table .selected-row:hover {
+            background: #e3eff8;
+        }
+
+.table-subtext {
+    display: block;
+    ``` margin-top: 3px;
+    color: var(--aero-text-muted);
+    font-size: 10px;
+    ```
+}
+
+.reason {
+    max-width: 180px;
+    ``` margin-top: 5px;
+    color: var(--aero-text-muted);
+    font-size: 10px;
+    line-height: 1.35;
+    ```
+}
+
+.selected-marker {
+    display: inline-flex;
+    ``` align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--aero-success-bg);
+    color: var(--aero-success);
+    font-weight: 800;
+    ```
+}
+
+.type-badge {
+    display: inline-block;
+    ``` padding: 4px 8px;
+    border-radius: 5px;
+    background: var(--aero-primary-light);
+    color: var(--aero-primary);
+    font-size: 11px;
+    font-weight: 700;
+    ```
+}
+
+.efficiency-value {
+    font-weight: 700;
+    color: var(--aero-success);
+}
+
+/* =========================================================
+17. HISTORY
+========================================================= */
+
+.history-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    ``` margin-bottom: 15px;
+    ```
+}
+
+.history-search {
+    width: min(520px, 100%);
+}
+
+.history-count {
+    color: var(--aero-text-muted);
+    ``` font-size: 12px;
+    font-weight: 600;
+    ```
+}
+
+.history-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.actions-cell {
+    white-space: nowrap;
+}
+
+/* =========================================================
+18. CHART
+========================================================= */
+
+.chart-wrap {
+    position: relative;
+    ``` width: 100%;
+    min-height: 380px;
+    padding: 15px;
+    border: 1px solid var(--aero-border);
+    border-radius: var(--aero-radius);
+    background: #fff;
+    ```
+}
+
+    .chart-wrap canvas {
+        display: block;
+        ``` width: 100% !important;
+        height: 350px !important;
+        ```
+    }
+
+/* =========================================================
+19. QUOTE
+========================================================= */
+
+.quote-card {
+    display: grid;
+    grid-template-columns: 1fr minmax(300px, 420px);
+    gap: 40px;
+    ``` background: linear-gradient( 135deg, #fff, #f8fbfd );
+    ```
+}
+
+.quote-information {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+    .quote-information h2 {
+        margin: 7px 0;
+        ``` color: var(--aero-primary-dark);
+        font-size: 25px;
+        ```
+    }
+
+    .quote-information p {
+        margin: 3px 0;
+        ``` color: var(--aero-text-soft);
+        font-size: 13px;
+        ```
+    }
+
+.quote-breakdown {
+    padding: 18px;
+    ``` border: 1px solid var(--aero-border);
+    border-radius: var(--aero-radius);
+    background: #fff;
+    ```
+}
+
+.quote-line,
+.quote-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    ``` padding: 10px 0;
+    ```
+}
+
+.quote-line {
+    color: var(--aero-text-soft);
+    font-size: 13px;
+}
+
+    .quote-line strong {
+        color: var(--aero-text);
+    }
+
+.quote-total {
+    margin-top: 7px;
+    padding-top: 15px;
+    ``` border-top: 1px solid var(--aero-border);
+    color: var(--aero-primary-dark);
+    font-size: 16px;
+    font-weight: 800;
+    ```
+}
+
+    .quote-total strong {
+        color: var(--aero-primary-dark);
+        font-size: 23px;
+    }
+
+/* =========================================================
+20. EMPTY STATES
+========================================================= */
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    ``` min-height: 260px;
+    padding: 40px;
+    text-align: center;
+    ```
+}
+
+.compact-empty {
+    min-height: 150px;
+}
+
+.empty-icon {
+    display: flex;
+    ``` align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    margin-bottom: 15px;
+    border-radius: 50%;
+    background: var(--aero-primary-light);
+    color: var(--aero-primary);
+    font-size: 23px;
+    font-weight: 700;
+    ```
+}
+
+.empty-state h2,
+.empty-state h3 {
+    margin: 0 0 7px;
+    ``` color: var(--aero-primary-dark);
+    ```
+}
+
+.empty-state p {
+    max-width: 520px;
+    ``` margin: 0 0 18px;
+    color: var(--aero-text-soft);
+    font-size: 13px;
+    ```
+}
+
+/* =========================================================
+21. VALIDATION
+========================================================= */
+
+.input-validation-error {
+    border-color: var(--aero-danger) !important;
+}
+
+    .input-validation-error:focus {
+        box-shadow: 0 0 0 3px rgba(179, 58, 58, 0.12) !important;
+    }
+
+.field-validation-error {
+    color: var(--aero-danger);
+}
+
+.validation-summary-errors {
+    padding: 12px 15px;
+    ``` border: 1px solid #efc3c3;
+    border-radius: var(--aero-radius);
+    background: var(--aero-danger-bg);
+    color: var(--aero-danger);
+    ```
+}
+
+    .validation-summary-errors ul {
+        margin: 0;
+        padding-left: 20px;
+    }
+
+/* =========================================================
+22. ACCESSIBILITY
+========================================================= */
+
+.visually-hidden {
+    position: absolute !important;
+    ``` width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+    ```
+}
+
+:focus-visible {
+    outline: 3px solid rgba(29, 111, 165, 0.30);
+    outline-offset: 2px;
+}
+
+/* =========================================================
+23. BOOTSTRAP OVERRIDES USED BY AEROSPEC
+========================================================= */
+
+.container,
+.container-fluid {
+    max-width: none;
+}
+
+.text-muted {
+    color: var(--aero-text-muted) !important;
+}
+
+.text-danger {
+    color: var(--aero-danger) !important;
+}
+
+/* =========================================================
+24. RESPONSIVE - TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    ```
+    .page-shell {
+        width: min(100% - 30px, 1100px);
+    }
+
+    .form-grid-3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .fan-type-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .detail-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .selected-fan-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .selected-fan-primary {
+        grid-column: 1 / -1;
+    }
+
+    .fan-spec {
+        min-height: 100px;
+    }
+
+    .hero-metrics {
+        min-width: 0;
+    }
+
+    .result-hero {
+        flex-direction: column;
+    }
+
+    .hero-metrics {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .hero-metric {
+        border-left: 0;
+        border-right: 1px solid rgba(255, 255, 255, 0.16);
+    }
+
+        .hero-metric:last-child {
+            border-right: 0;
+        }
+
+    .quote-card {
+        grid-template-columns: 1fr;
+    }
+
+    ```
+}
+
+/* =========================================================
+25. RESPONSIVE - MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    ```
+    html {
+        font-size: 14px;
+    }
+
+    .page-shell {
+        width: calc(100% - 20px);
+        padding-top: 22px;
+        padding-bottom: 40px;
+    }
+
+    .page-header {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .page-header h1 {
+        font-size: 28px;
+    }
+
+    .aero-card {
+        padding: 18px;
+        border-radius: var(--aero-radius);
+    }
+
+    .form-grid,
+    .form-grid-3 {
+        grid-template-columns: 1fr;
+        gap: 17px;
+    }
+
+    .fan-type-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .stat-card {
+        padding: 15px;
+    }
+
+        .stat-card strong {
+            font-size: 22px;
+        }
+
+    .result-hero {
+        padding: 22px;
+    }
+
+    .hero-metrics {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .hero-metric {
+        min-height: 80px;
+        padding: 12px;
+        border-right: 1px solid rgba(255, 255, 255, 0.16);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+    }
+
+        .hero-metric:nth-child(2n) {
+            border-right: 0;
+        }
+
+        .hero-metric:nth-last-child(-n + 2) {
+            border-bottom: 0;
+        }
+
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+        .detail-grid > div {
+            border-right: 0;
+        }
+
+    .selected-fan-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .selected-fan-primary {
+        grid-column: 1 / -1;
+    }
+
+    .fan-spec {
+        min-height: 90px;
+    }
+
+    .chart-wrap {
+        min-height: 300px;
+        padding: 8px;
+    }
+
+        .chart-wrap canvas {
+            height: 280px !important;
+        }
+
+    .history-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .history-search {
+        width: 100%;
+    }
+
+    .form-actions {
+        justify-content: stretch;
+    }
+
+        .form-actions .btn,
+        .form-actions form {
+            width: 100%;
+        }
+
+            .form-actions form .btn {
+                width: 100%;
+            }
+
+        .form-actions .btn-lg {
+            min-width: 0;
+        }
+
+    .quote-card {
+        gap: 20px;
+    }
+
+    ```
+}
+
+/* =========================================================
+26. SMALL MOBILE
+========================================================= */
+
+@media (max-width: 430px) {
+
+    ```
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-metrics {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-metric,
+    .hero-metric:nth-child(2n) {
+        border-right: 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+    }
+
+        .hero-metric:last-child {
+            border-bottom: 0;
+        }
+
+    .selected-fan-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .selected-fan-primary {
+        grid-column: auto;
+    }
+
+    .fan-spec {
+        border-left: 0;
+        border-top: 1px solid var(--aero-border);
+    }
+
+    .section-heading {
+        gap: 10px;
+    }
+
+    .section-icon {
+        flex-basis: 32px;
+        width: 32px;
+        height: 32px;
+    }
+
+    ```
+}
+
+/* =========================================================
+27. PRINT
+========================================================= */
+
+@media print {
+
+    ```
+    body {
+        background: #fff;
+    }
+
+    .page-shell {
+        width: 100%;
+        padding: 0;
+    }
+
+    .page-header .header-actions,
+    .form-actions,
+    .history-toolbar,
+    .btn,
+    form {
+        display: none !important;
+    }
+
+    .aero-card,
+    .stat-card,
+    .result-hero {
+        box-shadow: none;
+        break-inside: avoid;
+    }
+
+    .result-hero {
+        color: #000;
+        background: #fff;
+        border: 1px solid #ccc;
+    }
+
+        .result-hero h2,
+        .hero-metric strong {
+            color: #000;
+        }
+
+        .result-hero .eyebrow,
+        .hero-metric span {
+            color: #555;
+        }
+
+    .hero-metric {
+        border-color: #ccc;
+    }
+
+    .chart-wrap {
+        break-inside: avoid;
+    }
+
+    ```
 }
